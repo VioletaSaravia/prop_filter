@@ -117,6 +117,12 @@ func NewSearchQuery(ctx *cli.Context) (query *SearchQuery, err error) {
 	return query, err
 }
 
+func FilterAndPrint(query SearchQuery) (err error) {
+	reader := bufio.NewReader(query.InputFile)
+	text, _ := reader.ReadString('\n')
+	fmt.Println(text)
+	return err
+}
 
 func main() {
 	app := &cli.App{
