@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"os"
-	"prop_filter_cli/lib"
+	"prop_filter/lib"
 )
 
 func main() {

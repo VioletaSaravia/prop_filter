@@ -118,7 +118,7 @@ func (l Location) Filter(data Property) bool {
 	q := l.Center
 	r := l.Radius
 	loc := data.Location
-	return math.Sqrt(math.Pow(loc[0]-q[0], 2)+math.Pow(loc[1]-q[1], 2)) <= r
+	return math.Sqrt(math.Pow(loc.X-q.X, 2)+math.Pow(loc.Y-q.Y, 2)) <= r
 }
 
 type DescriptionQuery struct{ *regexp.Regexp }

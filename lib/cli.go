@@ -75,7 +75,7 @@ var Commands []*cli.Command = []*cli.Command{
 		Name:      "location",
 		Aliases:   []string{"l"},
 		Usage:     "filter by distance to a location.",
-		UsageText: "Property Filter location [x location] [y location] [x radius] [y radius]",
+		UsageText: "Property Filter location [x location] [y location] [distance]",
 		Action: func(ctx *cli.Context) error {
 			return Filter(&Location{}, ctx)
 		},
