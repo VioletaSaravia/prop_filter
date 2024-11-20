@@ -3,13 +3,8 @@ package lib
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"os"
 	"strconv"
 	"strings"
-
-	"github.com/gocarina/gocsv"
-	"github.com/urfave/cli/v2"
 )
 
 type FileType string
@@ -76,58 +71,4 @@ type Property struct {
 	Location      Vector2      `json:"location" csv:"location"`
 	Description   string       `json:"description" csv:"description"`
 	Ammenities    Ammenities   `json:"ammenities" csv:"ammenities"`
-}
-
-type SearchQuery struct {
-	InputFile  string
-	OutputFile string
-	OutputType FileType
-	Exclude    bool
-	Args       SearchFilter
-}
-
-func NewSearchQuery(filter SearchFilter, ctx *cli.Context) (query *SearchQuery, err error) {
-	query = &SearchQuery{
-		InputFile:  ctx.String("input"),
-		OutputFile: ctx.String("output"),
-		OutputType: FileType(""),
-		Exclude:    ctx.Bool("exclude"),
-		Args:       filter,
-	}
-
-	if err = query.Args.Parse(ctx.Args()); err != nil {
-		return nil, err
-	}
-
-	return query, err
-}
-
-func (query *SearchQuery) Unmarshal() (*[]Property, error) {
-	var err error
-	var data []byte
-	var properties []Property
-
-	if query.InputFile != "" {
-		if data, err = os.ReadFile(query.InputFile); err != nil {
-			return nil, err
-		}
-	} else {
-		if data, err = io.ReadAll(os.Stdin); err != nil {
-			return nil, err
-		}
-	}
-
-	var csvErr error
-	if csvErr = gocsv.UnmarshalBytes(data, &properties); csvErr == nil {
-		query.OutputType = typeCSV
-		return &properties, nil
-	}
-
-	var jsonErr error
-	if jsonErr = json.Unmarshal(data, &properties); jsonErr == nil {
-		query.OutputType = typeJSON
-		return &properties, nil
-	}
-
-	return nil, fmt.Errorf("cannot parse input data as CSV (%s) or JSON (%s)", csvErr, jsonErr)
 }
