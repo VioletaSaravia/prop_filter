@@ -41,6 +41,82 @@ type Area struct {
 	Radius Vector2D
 }
 
+type SearchQuery struct {
+	InputFile   io.Reader
+	OutputFile  io.Writer
+	Type        InputType
+	Footage     [2]int
+	Lighting    LightingType
+	Rooms       [2]int
+	Bathrooms   [2]int
+	Location    Area
+	Description *regexp.Regexp
+	Ammenities  string
+}
+
+func NewSearchQuery(ctx *cli.Context) (query *SearchQuery, err error) {
+	query = &SearchQuery{}
+
+	// in file
+	if ctx.NArg() > 0 {
+		if query.InputFile, err = os.Open(ctx.Args().Get(0)); err != nil {
+			return nil, err
+		}
+	}
+
+	// light
+	switch ctx.String("lighting") {
+	case "low":
+		query.Lighting = lightingLow
+	case "medium", "med":
+		query.Lighting = lightingMed
+	case "high":
+		query.Lighting = lightingHigh
+	case "":
+		break
+	default:
+		return nil, fmt.Errorf("unsupported lighting level: %s", ctx.String("lighting"))
+	}
+
+	// type
+	switch ctx.String("input") {
+	case "csv", "":
+		query.Type = TypeCSV
+	case "tsv":
+		query.Type = TypeTSV
+	case "json":
+		query.Type = TypeJSON
+	default:
+		return nil, fmt.Errorf("unsupported file type: %s", ctx.String("input"))
+	}
+
+	// rooms
+
+	// bathrooms
+
+	// loc
+
+	// desc
+	if query.Description, err = regexp.Compile(ctx.String("description")); err != nil {
+		return nil, err
+	}
+
+	// amm
+
+	// price
+
+	// footage
+
+	// output
+	if outputFile := ctx.String("output"); outputFile != "" {
+		if query.OutputFile, err = os.Create(outputFile); err != nil {
+			return nil, err
+		}
+	}
+
+	return query, err
+}
+
 
 func main() {
 	app := &cli.App{
