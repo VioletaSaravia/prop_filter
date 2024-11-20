@@ -31,10 +31,16 @@ const (
 // 2-decimal fixed
 type Currency int
 
-type Vector2 [2]float32
-type Vector2D struct {
-	X float32
-	Y float32
+type Vector2 [2]float64
+
+func (v *Vector2) UnmarshalCSV(string) error {
+	return nil
+}
+
+type Ammenities map[string]bool
+
+func (a *Ammenities) UnmarshalCSV(string) error {
+	return nil
 }
 
 type Property struct {
