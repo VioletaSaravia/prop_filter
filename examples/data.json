@@ -1,0 +1,203 @@
+[
+    {
+      "squareFootage": 1200,
+      "lighting": "medium",
+      "price": 250000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "location": [37.7749, -122.4194],
+      "description": "A cozy family home in a quiet neighborhood.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 800,
+      "lighting": "low",
+      "price": 150000,
+      "rooms": 2,
+      "bathrooms": 1,
+      "location": [40.7128, -74.0060],
+      "description": "Compact apartment in the city center.",
+      "ammenities": {"yard": false, "garage": false, "pool": false}
+    },
+    {
+      "squareFootage": 2500,
+      "lighting": "high",
+      "price": 450000,
+      "rooms": 5,
+      "bathrooms": 3,
+      "location": [34.0522, -118.2437],
+      "description": "Spacious villa with scenic views.",
+      "ammenities": {"yard": true, "garage": true, "pool": true}
+    },
+    {
+      "squareFootage": 1800,
+      "lighting": "medium",
+      "price": 350000,
+      "rooms": 4,
+      "bathrooms": 2,
+      "location": [36.1627, -86.7816],
+      "description": "Modern home in a bustling suburb.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 900,
+      "lighting": "low",
+      "price": 175000,
+      "rooms": 2,
+      "bathrooms": 1,
+      "location": [41.8781, -87.6298],
+      "description": "Affordable condo with easy access to amenities.",
+      "ammenities": {"yard": false, "garage": false, "pool": false}
+    },
+    {
+      "squareFootage": 1600,
+      "lighting": "medium",
+      "price": 300000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "location": [47.6062, -122.3321],
+      "description": "Charming house near downtown.",
+      "ammenities": {"yard": true, "garage": false, "pool": false}
+    },
+    {
+      "squareFootage": 3000,
+      "lighting": "high",
+      "price": 500000,
+      "rooms": 6,
+      "bathrooms": 4,
+      "location": [25.7617, -80.1918],
+      "description": "Luxury mansion with private pool.",
+      "ammenities": {"yard": true, "garage": true, "pool": true}
+    },
+    {
+      "squareFootage": 2200,
+      "lighting": "medium",
+      "price": 400000,
+      "rooms": 4,
+      "bathrooms": 3,
+      "location": [39.7392, -104.9903],
+      "description": "Beautiful home with mountain views.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 1100,
+      "lighting": "low",
+      "price": 200000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "location": [32.7767, -96.7970],
+      "description": "Charming starter home.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 1700,
+      "lighting": "medium",
+      "price": 325000,
+      "rooms": 3,
+      "bathrooms": 2.5,
+      "location": [29.7604, -95.3698],
+      "description": "Contemporary design in a growing community.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 750,
+      "lighting": "low",
+      "price": 140000,
+      "rooms": 1,
+      "bathrooms": 1,
+      "location": [39.9526, -75.1652],
+      "description": "Small but functional studio.",
+      "ammenities": {"yard": false, "garage": false, "pool": false}
+    },
+    {
+      "squareFootage": 2000,
+      "lighting": "medium",
+      "price": 375000,
+      "rooms": 4,
+      "bathrooms": 3,
+      "location": [33.4484, -112.0740],
+      "description": "Spacious house with modern upgrades.",
+      "ammenities": {"yard": true, "garage": true, "pool": true}
+    },
+    {
+      "squareFootage": 1300,
+      "lighting": "high",
+      "price": 275000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "location": [44.9778, -93.2650],
+      "description": "Stylish townhouse in a prime location.",
+      "ammenities": {"yard": false, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 1400,
+      "lighting": "medium",
+      "price": 290000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "location": [38.9072, -77.0369],
+      "description": "Classic home in the nation's capital.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 3200,
+      "lighting": "high",
+      "price": 600000,
+      "rooms": 5,
+      "bathrooms": 4,
+      "location": [28.5383, -81.3792],
+      "description": "Expansive property with luxury finishes.",
+      "ammenities": {"yard": true, "garage": true, "pool": true}
+    },
+    {
+      "squareFootage": 1150,
+      "lighting": "low",
+      "price": 210000,
+      "rooms": 2,
+      "bathrooms": 2,
+      "location": [37.3382, -121.8863],
+      "description": "Affordable duplex in a growing tech hub.",
+      "ammenities": {"yard": false, "garage": false, "pool": false}
+    },
+    {
+      "squareFootage": 950,
+      "lighting": "low",
+      "price": 180000,
+      "rooms": 2,
+      "bathrooms": 1,
+      "location": [42.3601, -71.0589],
+      "description": "Historic condo with a touch of charm.",
+      "ammenities": {"yard": false, "garage": false, "pool": false}
+    },
+    {
+      "squareFootage": 2100,
+      "lighting": "high",
+      "price": 425000,
+      "rooms": 4,
+      "bathrooms": 3,
+      "location": [34.0522, -118.2437],
+      "description": "Modern and open-concept home.",
+      "ammenities": {"yard": true, "garage": true, "pool": true}
+    },
+    {
+      "squareFootage": 1450,
+      "lighting": "medium",
+      "price": 310000,
+      "rooms": 3,
+      "bathrooms": 2.5,
+      "location": [40.7128, -74.0060],
+      "description": "Stylish family home in the city.",
+      "ammenities": {"yard": true, "garage": true, "pool": false}
+    },
+    {
+      "squareFootage": 1250,
+      "lighting": "medium",
+      "price": 265000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "location": [37.7749, -122.4194],
+      "description": "Eco-friendly design with solar panels.",
+      "ammenities": {"yard": true, "garage": false, "pool": false}
+    }
+  ]
+  
