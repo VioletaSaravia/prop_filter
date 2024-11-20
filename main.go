@@ -1,5 +1,16 @@
 package main
 
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"log"
+	"os"
+	"regexp"
+
+	"github.com/urfave/cli/v2"
+)
+
 type LightingType string
 
 const (
