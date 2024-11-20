@@ -55,8 +55,8 @@ type Property struct {
 }
 
 type Area struct {
-	Center Vector2D
-	Radius Vector2D
+	Center Vector2
+	Radius float64
 }
 
 type SearchQuery struct {
