@@ -1,81 +1,109 @@
 package lib
 
-import "github.com/urfave/cli/v2"
+import (
+	"github.com/urfave/cli/v2"
+)
 
 var Flags []cli.Flag = []cli.Flag{
 	&cli.StringFlag{
 		Name:    "input",
-		Value:   "csv",
+		Value:   "",
 		Aliases: []string{"i"},
-		Usage:   "Input type. Only necessary when reading from STDIN. Supported: CSV, JSON.",
-	},
-	&cli.StringFlag{
-		Name:    "footage",
-		Aliases: []string{"f"},
-		Usage:   "Filter square footage by `RANGE`.",
-	},
-	&cli.StringFlag{
-		Name:    "price",
-		Aliases: []string{"p"},
-		Usage:   "Filter price by `RANGE`.",
-	},
-	&cli.StringFlag{
-		Name:    "lighting",
-		Aliases: []string{"light"},
-		Usage:   "Filter by a certain `LEVEL` of lighting. Options: low, medium, high.",
-	},
-	&cli.StringFlag{
-		Name:    "rooms",
-		Aliases: []string{"r"},
-		Usage:   "Filter rooms by `RANGE`.",
-	},
-	&cli.StringFlag{
-		Name:    "bathrooms",
-		Aliases: []string{"b"},
-		Usage:   "Filter bathrooms by `RANGE`.",
-	},
-	&cli.StringFlag{
-		Name:    "location",
-		Value:   "csv",
-		Aliases: []string{"l"},
-		Usage:   "Filter by location.",
-	},
-	&cli.StringFlag{
-		Name:    "description",
-		Aliases: []string{"d"},
-		Usage:   "Filter description by `QUERY`. Supports regex queries.",
-	},
-	&cli.StringFlag{
-		Name:    "ammenities",
-		Aliases: []string{"a", "ai"},
-		Usage:   "Filter by included ammenities.",
+		Usage:   "Input file. Supported types: CSV, JSON.",
 	},
 	&cli.StringFlag{
 		Name:    "output",
 		Aliases: []string{"o"},
 		Usage:   "Output results to `FILE`.",
 	},
+	&cli.BoolFlag{
+		Name:    "exclude",
+		Aliases: []string{"e"},
+		Usage:   "Exclude search",
+	},
 }
 
-func Run(ctx *cli.Context) (err error) {
-	query, err := NewSearchQuery(ctx)
-	if err != nil {
-		return err
-	}
+var Commands []*cli.Command = []*cli.Command{
+	{
+		Name:      "footage",
+		Aliases:   []string{"f"},
+		Usage:     "filter by square footage.",
+		UsageText: "Property Filter footage [minimum] [maximum]",
+		Action: func(ctx *cli.Context) error {
+			return Filter(&FootageFilter{}, ctx)
+		},
+	},
+	{
+		Name:      "price",
+		Aliases:   []string{"p"},
+		Usage:     "filter by price.",
+		UsageText: "Property Filter price [minimum] [maximum]",
+		Args:      true,
+		Action: func(ctx *cli.Context) error {
+			return Filter(&PriceFilter{}, ctx)
+		},
+	},
+	{
+		Name:      "lighting",
+		Aliases:   []string{"light"},
+		Usage:     "filter by light level. Supported levels: min, med and max",
+		UsageText: "Property Filter lighting [level]",
+		Action: func(ctx *cli.Context) error {
+			filter := LightingType("")
+			return Filter(&filter, ctx)
+		},
+	},
+	{
+		Name:      "rooms",
+		Aliases:   []string{"r"},
+		Usage:     "filter by number of rooms.",
+		UsageText: "Property Filter rooms [minimum] [maximum]",
+		Action: func(ctx *cli.Context) error {
+			return Filter(&RoomsFilter{}, ctx)
+		},
+	},
+	{
+		Name:      "bathrooms",
+		Aliases:   []string{"b"},
+		Usage:     "filter by number of bathrooms.",
+		UsageText: "Property Filter bathrooms [minimum] [maximum]",
+		Action: func(ctx *cli.Context) error {
+			return Filter(&BathroomsFilter{}, ctx)
+		},
+	},
+	{
+		Name:      "location",
+		Aliases:   []string{"l"},
+		Usage:     "filter by distance to a location.",
+		UsageText: "Property Filter location [x location] [y location] [x radius] [y radius]",
+		Action: func(ctx *cli.Context) error {
+			return Filter(&Location{}, ctx)
+		},
+	},
+	{
+		Name:      "description",
+		Aliases:   []string{"d"},
+		Usage:     "filter by description. Supports Regex.",
+		UsageText: "Property Filter description [search query]",
+		Action: func(ctx *cli.Context) error {
+			return Filter(&DescriptionQuery{}, ctx)
+		},
+	},
+	{
+		Name:      "ammenities",
+		Aliases:   []string{"a"},
+		Usage:     "filter by included ammenities.",
+		UsageText: "Property Filter ammenities [ammenities]",
+		Action: func(ctx *cli.Context) error {
+			filter := AmmenitiesFilter("")
+			return Filter(&filter, ctx)
+		},
+	}}
 
-	data, err := Parse(query.InputFile, query.InputType)
-	if err != nil {
-		return err
-	}
-
-	filteredData, err := Filter(*query, *data)
-	if err != nil {
-		return err
-	}
-
-	if err = Print(filteredData, query.OutputFile, query.OutputType); err != nil {
-		return err
-	}
-
-	return nil
+var App cli.App = cli.App{
+	Flags:    Flags,
+	Commands: Commands,
+	HelpName: "Property Filter",
+	Name:     "propfilter",
+	Usage:    "Filter large sets of real estate properties based on their particular attributes.",
 }

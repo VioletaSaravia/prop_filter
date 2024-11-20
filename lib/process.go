@@ -3,113 +3,86 @@ package lib
 import (
 	"encoding/json"
 	"fmt"
-	"math"
 	"os"
 
 	"github.com/gocarina/gocsv"
+	"github.com/urfave/cli/v2"
 )
 
-func Parse(inputFile string, inputType FileType) (*[]Property, error) {
+func Parse(query *SearchQuery) (*[]Property, error) {
 	var err error
 	var properties []Property
 
 	var file *os.File
-	if inputFile != "" {
-		if file, err = os.Open(inputFile); err != nil {
+	if query.InputFile != "" {
+		if file, err = os.Open(query.InputFile); err != nil {
 			return nil, err
 		}
-
 	} else {
 		file = os.Stdin
 	}
 	defer file.Close()
 
-	switch inputType {
-	case TypeCSV:
-
-		if err = gocsv.UnmarshalFile(file, &properties); err != nil {
-			return nil, err
-		}
-	case TypeJSON:
-		decoder := json.NewDecoder(file)
-		if err = decoder.Decode(&properties); err != nil {
-			return nil, err
-		}
-	default:
-		return nil, fmt.Errorf("unreachable")
+	if err = gocsv.UnmarshalFile(file, &properties); err == nil {
+		query.OutputType = typeCSV
+		return &properties, err
 	}
 
-	return &properties, err
+	if err = json.NewDecoder(file).Decode(&properties); err == nil {
+		query.OutputType = typeJSON
+		return &properties, err
+	}
+
+	return nil, fmt.Errorf("cannot parse input data as CSV or JSON")
 }
 
-func Filter(query SearchQuery, input []Property) (output []Property, err error) {
-PropertiesLoop:
-	for _, p := range input {
-		// NOTE: We are currently running every filter on every query, regardless of whether
-		// it was passed by the user or not, by leveraging meaningful zero values in SearchQuery.
-		// This is much simpler at the cost of performance.
-
-		if query.Description != nil && !query.Description.MatchString(p.Description) {
-			continue
-		}
-
-		if p.SquareFootage < query.Footage[0] || p.SquareFootage >= query.Footage[1] {
-			continue
-		}
-
-		if p.Rooms < query.Rooms[0] || p.Rooms >= query.Rooms[1] {
-			continue
-		}
-
-		if p.Bathrooms < query.Bathrooms[0] || p.Bathrooms >= query.Bathrooms[1] {
-			continue
-		}
-
-		if p.Price < query.Price[0] || p.Price >= query.Price[1] {
-			continue
-		}
-
-		if query.Lighting != "" && p.Lighting != query.Lighting {
-			continue
-		}
-
-		q := query.Location.Center
-		r := query.Location.Radius
-		l := p.Location
-		if math.Sqrt(math.Pow(l[0]-q[0], 2)+math.Pow(l[1]-q[1], 2)) > r {
-			continue
-		}
-
-		for _, a := range query.Ammenities {
-			if has, ok := p.Ammenities[a]; !ok || !has {
-				continue PropertiesLoop
-			}
-		}
-
-		output = append(output, p)
-
-	}
-	return output, nil
-}
-
-func Print(data []Property, out string, fileType FileType) (err error) {
-	if out == "" {
-		fmt.Println(data)
-		return nil
-	}
-
-	file, err := os.Create(out)
+func Filter(filter SearchFilter, ctx *cli.Context) error {
+	query, err := NewSearchQuery(filter, ctx)
 	if err != nil {
 		return err
 	}
 
-	switch fileType {
-	case TypeCSV:
+	data, err := Parse(query)
+	if err != nil {
+		return err
+	}
 
+	var filteredData []Property
+	for _, p := range *data {
+		passed := query.Args.Filter(p)
+		if query.Exclude {
+			passed = !passed
+		}
+
+		if passed {
+			filteredData = append(filteredData, p)
+		}
+	}
+
+	if err = Print(filteredData, query.OutputFile, query.OutputType); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func Print(data []Property, out string, fileType FileType) (err error) {
+	var file *os.File
+	if out == "" {
+		file = os.Stdout
+	} else {
+		file, err = os.Create(out)
+		if err != nil {
+			return err
+		}
+	}
+
+	switch fileType {
+	case typeCSV:
 		if err = gocsv.MarshalFile(data, file); err != nil {
 			return err
 		}
-	case TypeJSON:
+	case typeJSON:
 		jsonData, err := json.MarshalIndent(data, "", "  ")
 		if err != nil {
 			return err
