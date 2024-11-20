@@ -4,37 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 
 	"github.com/gocarina/gocsv"
 	"github.com/urfave/cli/v2"
 )
-
-func Parse(query *SearchQuery) (*[]Property, error) {
-	var err error
-	var properties []Property
-
-	var file *os.File
-	if query.InputFile != "" {
-		if file, err = os.Open(query.InputFile); err != nil {
-			return nil, err
-		}
-	} else {
-		file = os.Stdin
-	}
-	defer file.Close()
-
-	if err = gocsv.UnmarshalFile(file, &properties); err == nil {
-		query.OutputType = typeCSV
-		return &properties, err
-	}
-
-	if err = json.NewDecoder(file).Decode(&properties); err == nil {
-		query.OutputType = typeJSON
-		return &properties, err
-	}
-
-	return nil, fmt.Errorf("cannot parse input data as CSV or JSON")
-}
 
 func Filter(filter SearchFilter, ctx *cli.Context) error {
 	query, err := NewSearchQuery(filter, ctx)
@@ -42,7 +16,7 @@ func Filter(filter SearchFilter, ctx *cli.Context) error {
 		return err
 	}
 
-	data, err := Parse(query)
+	data, err := query.Unmarshal()
 	if err != nil {
 		return err
 	}
@@ -77,7 +51,17 @@ func Print(data []Property, out string, fileType FileType) (err error) {
 		}
 	}
 
-	switch fileType {
+	var ext FileType
+	switch filepath.Ext(out) {
+	case ".json":
+		ext = typeJSON
+	case ".csv":
+		ext = typeCSV
+	default:
+		ext = fileType
+	}
+
+	switch ext {
 	case typeCSV:
 		if err = gocsv.MarshalFile(data, file); err != nil {
 			return err
