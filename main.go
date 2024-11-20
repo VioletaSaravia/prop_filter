@@ -197,16 +197,30 @@ func main() {
 				Aliases: []string{"o"},
 				Usage:   "Output results to `FILE`.",
 			},
-		},
+}
+
+func main() {
+	app := &cli.App{
+		Flags: Flags,
 		Name:  "Property Filter",
 		Usage: "Filter large sets of real estate properties based on their particular attributes.",
-		Action: func(ctx *cli.Context) error {
+		Action: func(ctx *cli.Context) (err error) {
 			query, err := NewSearchQuery(ctx)
 			if err != nil {
 				return err
 			}
 
-			if err := FilterAndPrint(*query); err != nil {
+			data, err := Parse(query.InputFile, query.InputType)
+			if err != nil {
+				return err
+			}
+
+			filteredData, err := Filter(*query, *data)
+			if err != nil {
+				return err
+			}
+
+			if err = Print(filteredData, query.OutputFile, query.OutputType); err != nil {
 				return err
 			}
 
