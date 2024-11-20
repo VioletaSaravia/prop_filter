@@ -94,7 +94,7 @@
       "lighting": "medium",
       "price": 325000,
       "rooms": 3,
-      "bathrooms": 2.5,
+      "bathrooms": 2,
       "location": [29.7604, -95.3698],
       "description": "Contemporary design in a growing community.",
       "ammenities": {"yard": true, "garage": true, "pool": false}
@@ -184,7 +184,7 @@
       "lighting": "medium",
       "price": 310000,
       "rooms": 3,
-      "bathrooms": 2.5,
+      "bathrooms": 2,
       "location": [40.7128, -74.0060],
       "description": "Stylish family home in the city.",
       "ammenities": {"yard": true, "garage": true, "pool": false}
