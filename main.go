@@ -44,14 +44,14 @@ func (a *Ammenities) UnmarshalCSV(string) error {
 }
 
 type Property struct {
-	SquareFootage int
-	Lighting      LightingType
-	Price         Currency
-	Rooms         int
-	Bathrooms     int
-	Location      Vector2
-	Description   string
-	Ammenities    map[string]bool //yard, garage, pool, etc
+	SquareFootage int          `json:"squareFootage" csv:"squareFootage"`
+	Lighting      LightingType `json:"lighting" csv:"lighting"`
+	Price         Currency     `json:"price" csv:"price"`
+	Rooms         int          `json:"rooms" csv:"rooms"`
+	Bathrooms     int          `json:"bathrooms" csv:"bathrooms"`
+	Location      Vector2      `json:"location" csv:"location"`
+	Description   string       `json:"description" csv:"description"`
+	Ammenities    Ammenities   `json:"ammenities" csv:"ammenities"`
 }
 
 type Area struct {
