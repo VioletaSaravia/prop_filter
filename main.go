@@ -1,13 +1,15 @@
 package main
 
 import (
-	"bufio"
+	"encoding/json"
 	"fmt"
-	"io"
 	"log"
+	"math"
 	"os"
+	"path/filepath"
 	"regexp"
 
+	"github.com/gocarina/gocsv"
 	"github.com/urfave/cli/v2"
 )
 
