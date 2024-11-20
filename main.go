@@ -21,12 +21,11 @@ const (
 	lightingHigh LightingType = "high"
 )
 
-type InputType string
+type FileType string
 
 const (
-	TypeCSV  InputType = "csv"
-	TypeTSV  InputType = "tsv"
-	TypeJSON InputType = "json"
+	TypeCSV  FileType = "csv"
+	TypeJSON FileType = "json"
 )
 
 // 2-decimal fixed
