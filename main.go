@@ -112,7 +112,7 @@ func NewSearchQuery(ctx *cli.Context) (query *SearchQuery, err error) {
 	case "json", ".json":
 		query.InputType = TypeJSON
 	default:
-		return nil, fmt.Errorf("unsupported file type: %s", ctx.String("input"))
+		return nil, fmt.Errorf("unsupported file type: %s", ext)
 	}
 
 	query.OutputFile = ctx.String("output")
@@ -337,9 +337,11 @@ var Flags []cli.Flag = []cli.Flag{
 
 func main() {
 	app := &cli.App{
-		Flags: Flags,
-		Name:  "Property Filter",
-		Usage: "Filter large sets of real estate properties based on their particular attributes.",
+		Args:     true,
+		Flags:    Flags,
+		HelpName: "Property Filter",
+		Name:     "propfilter",
+		Usage:    "Filter large sets of real estate properties based on their particular attributes.",
 		Action: func(ctx *cli.Context) (err error) {
 			query, err := NewSearchQuery(ctx)
 			if err != nil {
