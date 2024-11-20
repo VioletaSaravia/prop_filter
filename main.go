@@ -1,5 +1,47 @@
 package main
 
+type LightingType string
+
+const (
+	lightingLow  LightingType = "low"
+	lightingMed  LightingType = "medium"
+	lightingHigh LightingType = "high"
+)
+
+type InputType string
+
+const (
+	TypeCSV  InputType = "csv"
+	TypeTSV  InputType = "tsv"
+	TypeJSON InputType = "json"
+)
+
+// 2-decimal fixed
+type Currency int
+
+type Vector2 [2]float32
+type Vector2D struct {
+	X float32
+	Y float32
+}
+
+type Property struct {
+	SquareFootage int
+	Lighting      LightingType
+	Price         Currency
+	Rooms         int
+	Bathrooms     int
+	Location      Vector2
+	Description   string
+	Ammenities    map[string]bool //yard, garage, pool, etc
+}
+
+type Area struct {
+	Center Vector2D
+	Radius Vector2D
+}
+
+
 func main() {
 	app := &cli.App{
 		Flags: []cli.Flag{
