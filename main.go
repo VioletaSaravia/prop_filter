@@ -167,10 +167,65 @@ func NewSearchQuery(ctx *cli.Context) (query *SearchQuery, err error) {
 	return query, err
 }
 
-func FilterAndPrint(query SearchQuery) (err error) {
-	reader := bufio.NewReader(query.InputFile)
-	text, _ := reader.ReadString('\n')
-	fmt.Println(text)
+
+func Filter(query SearchQuery, input []Property) (output []Property, err error) {
+PropertiesLoop:
+	for _, p := range input {
+		// NOTE: We are currently running every filter on every query, regardless of whether
+		// it was passed by the user or not, by leveraging meaningful zero values in SearchQuery.
+		// This is much simpler, at the cost of performance.
+
+		if query.Description != nil && !query.Description.MatchString(p.Description) {
+			continue
+		}
+
+		if p.SquareFootage < query.Footage[0] || p.SquareFootage >= query.Footage[1] {
+			continue
+		}
+
+		if p.Rooms < query.Rooms[0] || p.Rooms >= query.Rooms[1] {
+			continue
+		}
+
+		if p.Bathrooms < query.Bathrooms[0] || p.Bathrooms >= query.Bathrooms[1] {
+			continue
+		}
+
+		if p.Price < query.Price[0] || p.Price >= query.Price[1] {
+			continue
+		}
+
+		if query.Lighting != "" && p.Lighting != query.Lighting {
+			continue
+		}
+
+		q := query.Location.Center
+		r := query.Location.Radius
+		l := p.Location
+		if math.Sqrt(math.Pow(l[0]-q[0], 2)+math.Pow(l[1]-q[1], 2)) > r {
+			continue
+		}
+
+		for _, a := range query.Ammenities {
+			if has, ok := p.Ammenities[a]; !ok || !has {
+				continue PropertiesLoop
+			}
+		}
+
+		output = append(output, p)
+
+	}
+	return output, nil
+}
+
+func Print(data []Property, out string, fileType FileType) (err error) {
+	if out == "" {
+		fmt.Println(data)
+		return nil
+	}
+
+	file, err := os.Create(out)
+	if err != nil {
 	return err
 }
 
