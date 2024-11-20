@@ -261,9 +261,26 @@ func Print(data []Property, out string, fileType FileType) (err error) {
 	return err
 }
 
-func main() {
-	app := &cli.App{
-		Flags: []cli.Flag{
+	switch fileType {
+	case TypeCSV:
+
+		if err = gocsv.MarshalFile(data, file); err != nil {
+			return err
+		}
+	case TypeJSON:
+		jsonData, err := json.MarshalIndent(data, "", "  ")
+		if err != nil {
+			return err
+		}
+		file.Write(jsonData)
+	default:
+		return fmt.Errorf("unreachable")
+	}
+
+	return nil
+}
+
+var Flags []cli.Flag = []cli.Flag{
 			&cli.StringFlag{
 				Name:    "input",
 				Value:   "csv",
