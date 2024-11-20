@@ -167,6 +167,38 @@ func NewSearchQuery(ctx *cli.Context) (query *SearchQuery, err error) {
 	return query, err
 }
 
+func Parse(inputFile string, inputType FileType) (*[]Property, error) {
+	var err error
+	var properties []Property
+
+	var file *os.File
+	if inputFile != "" {
+		if file, err = os.Open(inputFile); err != nil {
+			return nil, err
+		}
+
+	} else {
+		file = os.Stdin
+	}
+	defer file.Close()
+
+	switch inputType {
+	case TypeCSV:
+
+		if err = gocsv.UnmarshalFile(file, &properties); err != nil {
+			return nil, err
+		}
+	case TypeJSON:
+		decoder := json.NewDecoder(file)
+		if err = decoder.Decode(&properties); err != nil {
+			return nil, err
+		}
+	default:
+		return nil, fmt.Errorf("unreachable")
+	}
+
+	return &properties, err
+}
 
 func Filter(query SearchQuery, input []Property) (output []Property, err error) {
 PropertiesLoop:
