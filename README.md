@@ -6,7 +6,7 @@ Property Filter is a command-line tool designed to filter large sets of real est
 * Filter by any of the fields of a property (square footage, light level, price)
 * Read CSV or JSON from either a file or `stdin`.
 * Output results to a file or `stdout`.
-* Idempotent queries that leverage `stdin`, `stdout` and unix pipes, allowing you to create complex searches by concatenating multiple queries (see examples below)
+* Idempotent queries that leverage `stdin`, `stdout` and unix pipes, allowing you to create complex searches by concatenating multiple queries (see examples below).
 
 ## Installation
 Ensure that you have Go installed (version 1.18+). To install the tool, clone this repository and build the project:
