@@ -46,7 +46,7 @@ var Commands []*cli.Command = []*cli.Command{
 	{
 		Name:      "lighting",
 		Aliases:   []string{"light"},
-		Usage:     "filter by light level. Supported levels: min, med and max",
+		Usage:     "filter by light level. Supported levels: low, medium and high",
 		UsageText: "Property Filter lighting [level]",
 		Action: func(ctx *cli.Context) error {
 			filter := LightingType("")
@@ -92,8 +92,8 @@ var Commands []*cli.Command = []*cli.Command{
 	{
 		Name:      "ammenities",
 		Aliases:   []string{"a"},
-		Usage:     "filter by included ammenities.",
-		UsageText: "Property Filter ammenities [ammenities]",
+		Usage:     "filter by a given ammenity",
+		UsageText: "Property Filter ammenities [ammenity]",
 		Action: func(ctx *cli.Context) error {
 			filter := AmmenitiesFilter("")
 			return Filter(&filter, ctx)
@@ -104,6 +104,6 @@ var App cli.App = cli.App{
 	Flags:    Flags,
 	Commands: Commands,
 	HelpName: "Property Filter",
-	Name:     "propfilter",
+	Name:     "prop_filter",
 	Usage:    "Filter large sets of real estate properties based on their particular attributes.",
 }
