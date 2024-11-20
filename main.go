@@ -149,7 +149,7 @@ func main() {
 				Name:    "input",
 				Value:   "csv",
 				Aliases: []string{"i"},
-				Usage:   "Input type. Supported: CSV, TSV, JSON.",
+		Usage:   "Input type. Only necessary when reading from STDIN. Supported: CSV, JSON.",
 			},
 			&cli.StringFlag{
 				Name:    "footage",
