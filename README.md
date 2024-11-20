@@ -1,6 +1,6 @@
 # Property Filter CLI Tool
 ## Overview
-Property Filter is a command-line tool designed to filter large sets of real estate properties based on specific attributes, including square footage, price, number of rooms, lighting levels, and more. This tool supports CSV and JSON formats for input and output, enabling users to filter property data effectively for analysis or reporting purposes.
+Property Filter is a command-line tool designed to filter large sets of real estate properties based on specific attributes, including square footage, price, number of rooms, lighting levels, and more, in both CSV and JSON formats.
 
 ## Features
 * Filter by any of the fields of a property (square footage, light level, price)
